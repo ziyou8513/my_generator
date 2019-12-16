@@ -1,7 +1,7 @@
 # my_generator
 
 #### 介绍
-基于ssm框架
+基于ssm框架项目
 一键生成dao&service层
 
 #### 软件架构
