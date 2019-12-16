@@ -2,7 +2,7 @@
 
 #### 介绍
 基于ssm框架
-一键生成Spring项目dao&service层
+一键生成dao&service层
 
 #### 软件架构
 软件架构说明
