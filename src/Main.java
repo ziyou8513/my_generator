@@ -1,11 +1,9 @@
-import com.sun.deploy.util.StringUtils;
 import util.FileGenerator;
 import util.TemplateResolver;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -84,8 +82,8 @@ public class Main {
         String MODEL_DATABASE = MODEL_HOME + ".database";
 
         //获取基础路径
-        String[] split = BASE_PACKAGE.split("\\.");
-        String BASE_PATH = ".\\src\\main\\java\\" + StringUtils.join(Arrays.asList(split), File.separator);
+        String[] packageNames = BASE_PACKAGE.split("\\.");
+        String BASE_PATH = ".\\src\\main\\java\\" + String.join(File.separator, packageNames);
         //获取各类文件生成路径
         String DAO_FILE_PATH = BASE_PATH + "\\dao";
         String DAO_IMPL_FILE_PATH = DAO_FILE_PATH + "\\impl";
