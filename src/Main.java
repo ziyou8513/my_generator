@@ -1,8 +1,11 @@
+import com.sun.deploy.util.StringUtils;
 import util.FileGenerator;
 import util.TemplateResolver;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -24,19 +27,27 @@ public class Main {
         }
 
         //获取需要生成的model类
-        String UPPER_MODEL_NAME_LIST = pro.getProperty("UPPER_MODEL_NAME");
+        String PASCAL_MODEL_NAME_LIST = pro.getProperty("PASCAL_MODEL_NAME");
 
         //获取其他固定属性
         Map<String, String> params = makeParams(pro);
 
         //循环处理多个类的情况
-        for (String UPPER_MODEL_NAME : UPPER_MODEL_NAME_LIST.split(",")) {
-            params.put("upperModelName", UPPER_MODEL_NAME);
+        for (String PASCAL_MODEL_NAME : PASCAL_MODEL_NAME_LIST.split(",")) {
+            params.put("upperModelName", PASCAL_MODEL_NAME);
             //类名大驼峰转小驼峰
-            params.put("lowerModelName", Character.toLowerCase(UPPER_MODEL_NAME.charAt(0)) + UPPER_MODEL_NAME.substring(1));
+            String camelModelName = Character.toLowerCase(PASCAL_MODEL_NAME.charAt(0)) + PASCAL_MODEL_NAME.substring(1);
+            params.put("lowerModelName", camelModelName);
             //循环生成文件
-            loop(params, UPPER_MODEL_NAME);
+            loop(params, PASCAL_MODEL_NAME);
         }
+
+        //如果需要分页，则生成Page & Pageable
+        if (Boolean.parseBoolean(params.get("pagination"))) {
+            resolveTemplateAndGenerateFile(TemplateConsts.PAGE_TEMPLATE, null, params.get("modelFilePath"), "Page");
+            resolveTemplateAndGenerateFile(TemplateConsts.PAGEABLE_TEMPLATE, null, params.get("modelFilePath"), "Pageable");
+        }
+
         System.out.println("all done!");
     }
 
@@ -62,18 +73,26 @@ public class Main {
     }
 
     private static Map<String, String> makeParams(Properties pro) {
-        //获取包路径
-        String DAO_PACKAGE = pro.getProperty("DAO_PACKAGE");
-        String DAO_IMPL_PACKAGE = pro.getProperty("DAO_IMPL_PACKAGE");
-        String SERVICE_PACKAGE = pro.getProperty("SERVICE_PACKAGE");
-        String SERVICE_IMPL_PACKAGE = pro.getProperty("SERVICE_IMPL_PACKAGE");
-        String MODEL_HOME = pro.getProperty("MODEL_HOME");
-        String MODEL_DATABASE = pro.getProperty("MODEL_DATABASE");
-        //获取文件生成位置
-        String DAO_FILE_PATH = pro.getProperty("DAO_FILE_PATH");
-        String DAO_IMPL_FILE_PATH = pro.getProperty("DAO_IMPL_FILE_PATH");
-        String SERVICE_FILE_PATH = pro.getProperty("SERVICE_FILE_PATH");
-        String SERVICE_IMPL_FILE_PATH = pro.getProperty("SERVICE_IMPL_FILE_PATH");
+        //获取基础包名
+        String BASE_PACKAGE = pro.getProperty("BASE_PACKAGE");
+        //获取各类文件包路径
+        String DAO_PACKAGE = BASE_PACKAGE + ".dao";
+        String DAO_IMPL_PACKAGE = DAO_PACKAGE + ".impl";
+        String SERVICE_PACKAGE = BASE_PACKAGE + "service";
+        String SERVICE_IMPL_PACKAGE = SERVICE_PACKAGE + ".impl";
+        String MODEL_HOME = BASE_PACKAGE + ".model";
+        String MODEL_DATABASE = MODEL_HOME + ".database";
+
+        //获取基础路径
+        String[] split = BASE_PACKAGE.split("\\.");
+        String BASE_PATH = ".\\src\\main\\java\\" + StringUtils.join(Arrays.asList(split), File.separator);
+        //获取各类文件生成路径
+        String DAO_FILE_PATH = BASE_PATH + "\\dao";
+        String DAO_IMPL_FILE_PATH = DAO_FILE_PATH + "\\impl";
+        String SERVICE_FILE_PATH = BASE_PATH + "\\service";
+        String SERVICE_IMPL_FILE_PATH = SERVICE_FILE_PATH + "\\impl";
+        String MODEL_FILE_PATH = BASE_PATH + "\\model";
+
         //是否分页
         String pagination = pro.getProperty("PAGINATION");
         //是否生成service
@@ -93,6 +112,7 @@ public class Main {
         params.put("daoImplFilePath", DAO_IMPL_FILE_PATH);
         params.put("serviceFilePath", SERVICE_FILE_PATH);
         params.put("serviceImplFilePath", SERVICE_IMPL_FILE_PATH);
+        params.put("modelFilePath", MODEL_FILE_PATH);
         //是否分页
         params.put("pagination", pagination);
         //是否生成service

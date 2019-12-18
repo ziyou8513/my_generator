@@ -10,6 +10,10 @@ import java.util.regex.Pattern;
 public class TemplateResolver {
     //渲染模板
     public static String resolver(String template, Map<String, String> params) {
+        //如果参数列表为空，则直接返回模板
+        if (params == null || params.size() == 0) {
+            return template;
+        }
         StringBuffer sb = new StringBuffer();
         //正则匹配所有变量占位符 ${w+}
         Matcher m = Pattern.compile("\\$\\{\\w+}").matcher(template);

@@ -40,9 +40,9 @@ public class TemplateConsts {
             "import java.util.List;\n" +
             "\n" +
             "public class Page<T> implements Serializable {\n" +
-            "\t  //current page data\n" +
+            "    //current page data\n" +
             "    private List<T> data;\n" +
-            "\t  //total record num\n" +
+            "    //total record num\n" +
             "    private Integer totalNum;\n" +
             "\n" +
             "    public Page(List<T> data, Integer totalNum) {\n" +
@@ -133,10 +133,8 @@ public class TemplateConsts {
             "\n" +
             "    @Override\n" +
             "    public Page<${upperModelName}> findPage(${upperModelName} record, Pageable pageable) {\n" +
-            "        if (pageable == null) {\n" +
-            "            return new Page<>(null, 0);\n" +
-            "        }\n" +
             "        ${upperModelName}Example example = new ${upperModelName}Example();\n" +
+            "        ${upperModelName}Example.Criteria criteria = example.createCriteria();\n" +
             "        //TODO query condition\n" +
             "\n" +
             "        int totalNum = ${lowerModelName}Mapper.countByExample(example);\n" +
