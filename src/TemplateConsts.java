@@ -128,7 +128,10 @@ public class TemplateConsts {
             "\n" +
             "    @Override\n" +
             "    public List<${upperModelName}> findList(${upperModelName} record) {\n" +
-            "        return ${lowerModelName}Mapper.selectByExample(new ${upperModelName}Example());\n" +
+            "        ${upperModelName}Example example = new ${upperModelName}Example();\n" +
+            "        ${upperModelName}Example.Criteria criteria = example.createCriteria();\n" +
+            "        //TODO query condition\n" +
+            "        return ${lowerModelName}Mapper.selectByExample(example);\n" +
             "    }\n" +
             "\n" +
             "    @Override\n" +
@@ -200,7 +203,10 @@ public class TemplateConsts {
             "\n" +
             "    @Override\n" +
             "    public List<${upperModelName}> findList(${upperModelName} record) {\n" +
-            "        return ${lowerModelName}Mapper.selectByExample(new ${upperModelName}Example());\n" +
+            "        ${upperModelName}Example example = new ${upperModelName}Example();\n" +
+            "        ${upperModelName}Example.Criteria criteria = example.createCriteria();\n" +
+            "        //TODO query condition\n" +
+            "        return ${lowerModelName}Mapper.selectByExample(example);\n" +
             "    }\n" +
             "}\n";
 
