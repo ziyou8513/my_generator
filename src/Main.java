@@ -31,14 +31,14 @@ public class Main {
         Map<String, String> params = makeParams(pro);
 
         //循环处理多个类的情况
-        for (String PASCAL_MODEL_NAME : PASCAL_MODEL_NAME_LIST.split(",")) {
-            params.put("upperModelName", PASCAL_MODEL_NAME);
-            //类名大驼峰转小驼峰
-            String camelModelName = Character.toLowerCase(PASCAL_MODEL_NAME.charAt(0)) + PASCAL_MODEL_NAME.substring(1);
-            params.put("lowerModelName", camelModelName);
-            //循环生成文件
-            loop(params, PASCAL_MODEL_NAME);
-        }
+//        for (String PASCAL_MODEL_NAME : PASCAL_MODEL_NAME_LIST.split(",")) {
+//            params.put("upperModelName", PASCAL_MODEL_NAME);
+//            //类名大驼峰转小驼峰
+//            String camelModelName = Character.toLowerCase(PASCAL_MODEL_NAME.charAt(0)) + PASCAL_MODEL_NAME.substring(1);
+//            params.put("lowerModelName", camelModelName);
+//            //循环生成文件
+//            loop(params, PASCAL_MODEL_NAME);
+//        }
 
         //如果需要分页，则生成Page & Pageable
         if (Boolean.parseBoolean(params.get("pagination"))) {
@@ -83,7 +83,15 @@ public class Main {
 
         //获取基础路径
         String[] packageNames = BASE_PACKAGE.split("\\.");
+
+        //hack 在项目中使用的时候，需要调整生成文件的路径
+        //判断当前路径
+        String userDir = System.getProperty("user.dir");
         String BASE_PATH = ".\\src\\main\\java\\" + String.join(File.separator, packageNames);
+        if (userDir.contains("tool") || userDir.contains("tools")) {
+            BASE_PATH = "..\\." + BASE_PATH;
+        }
+
         //获取各类文件生成路径
         String DAO_FILE_PATH = BASE_PATH + "\\dao";
         String DAO_IMPL_FILE_PATH = DAO_FILE_PATH + "\\impl";
