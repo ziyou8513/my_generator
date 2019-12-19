@@ -1,7 +1,7 @@
 package templates;
 
 /**
- * Created by sheldon on 2019/12/19.
+ * Created by ziyou8513 on 2019/12/19.
  */
 public class Dao {
     public static final String TEMPLATE = "package ${daoPackage};\n" +

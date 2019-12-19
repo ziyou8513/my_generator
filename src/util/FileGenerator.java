@@ -5,7 +5,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 /**
- * Created by duanxufei on 2019/4/17.
+ * Created by ziyou8513 on 2019/4/17.
  */
 public class FileGenerator {
     //写文件
@@ -27,7 +27,7 @@ public class FileGenerator {
             fileWriter.write(content);
             fileWriter.close();
 
-            System.out.println("success generate file: " + fileName + "." + suffix);
+            System.out.println("success generate file: " + file.getPath());
         } catch (IOException e) {
             e.printStackTrace();
         }
