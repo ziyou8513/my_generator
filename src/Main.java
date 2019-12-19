@@ -1,3 +1,4 @@
+import templates.*;
 import util.FileGenerator;
 import util.TemplateResolver;
 
@@ -15,10 +16,8 @@ public class Main {
     private static final String SUFFIX = "java";
 
     public static void main(String[] args) {
-
         //加载配置文件
         Properties pro = readProperties();
-
         if (pro == null) {
             System.out.println("can not read properties!");
             return;
@@ -42,8 +41,8 @@ public class Main {
 
         //如果需要分页，则生成Page & Pageable
         if (Boolean.parseBoolean(params.get("pagination"))) {
-            resolveTemplateAndGenerateFile(TemplateConsts.PAGE_TEMPLATE, null, params.get("modelFilePath"), "Page");
-            resolveTemplateAndGenerateFile(TemplateConsts.PAGEABLE_TEMPLATE, null, params.get("modelFilePath"), "Pageable");
+            resolveTemplateAndGenerateFile(Page.TEMPLATE, null, params.get("modelFilePath"), "Page");
+            resolveTemplateAndGenerateFile(Pageable.TEMPLATE, null, params.get("modelFilePath"), "Pageable");
         }
 
         System.out.println("all done!");
@@ -132,11 +131,11 @@ public class Main {
         String daoTemplate;
         String daoImplTemplate;
         if (Boolean.parseBoolean(params.get("pagination"))) {
-            daoTemplate = TemplateConsts.DAO_TEMPLATE;
-            daoImplTemplate = TemplateConsts.DAO_IMPL_TEMPLATE;
+            daoTemplate = DaoPageable.TEMPLATE;
+            daoImplTemplate = DaoImplPageable.TEMPLATE;
         } else {
-            daoTemplate = TemplateConsts.DAO_TEMPLATE_WITHOUT_PAGE;
-            daoImplTemplate = TemplateConsts.DAO_IMPL_TEMPLATE_WITHOUT_PAGE;
+            daoTemplate = Dao.TEMPLATE;
+            daoImplTemplate = DaoImpl.TEMPLATE;
         }
         //dao
         resolveTemplateAndGenerateFile(daoTemplate, params, params.get("daoFilePath"), UPPER_MODEL_NAME + "Dao");
@@ -146,9 +145,9 @@ public class Main {
         //判断是否生成service
         if (Boolean.parseBoolean(params.get("generateService"))) {
             //service
-            resolveTemplateAndGenerateFile(TemplateConsts.SERVICE_TEMPLATE, params, params.get("serviceFilePath"), UPPER_MODEL_NAME + "Service");
+            resolveTemplateAndGenerateFile(Service.TEMPLATE, params, params.get("serviceFilePath"), UPPER_MODEL_NAME + "Service");
             //serviceImpl
-            resolveTemplateAndGenerateFile(TemplateConsts.SERVICE_IMPL_TEMPLATE, params, params.get("serviceImplFilePath"), UPPER_MODEL_NAME + "ServiceImpl");
+            resolveTemplateAndGenerateFile(ServiceImpl.TEMPLATE, params, params.get("serviceImplFilePath"), UPPER_MODEL_NAME + "ServiceImpl");
         }
     }
 
