@@ -31,14 +31,14 @@ public class Main {
         Map<String, String> params = makeParams(pro);
 
         //循环处理多个类的情况
-//        for (String PASCAL_MODEL_NAME : PASCAL_MODEL_NAME_LIST.split(",")) {
-//            params.put("upperModelName", PASCAL_MODEL_NAME);
-//            //类名大驼峰转小驼峰
-//            String camelModelName = Character.toLowerCase(PASCAL_MODEL_NAME.charAt(0)) + PASCAL_MODEL_NAME.substring(1);
-//            params.put("lowerModelName", camelModelName);
-//            //循环生成文件
-//            loop(params, PASCAL_MODEL_NAME);
-//        }
+        for (String PASCAL_MODEL_NAME : PASCAL_MODEL_NAME_LIST.split(",")) {
+            params.put("upperModelName", PASCAL_MODEL_NAME);
+            //类名大驼峰转小驼峰
+            String camelModelName = Character.toLowerCase(PASCAL_MODEL_NAME.charAt(0)) + PASCAL_MODEL_NAME.substring(1);
+            params.put("lowerModelName", camelModelName);
+            //循环生成文件
+            loop(params, PASCAL_MODEL_NAME);
+        }
 
         //如果需要分页，则生成Page & Pageable
         if (Boolean.parseBoolean(params.get("pagination"))) {
