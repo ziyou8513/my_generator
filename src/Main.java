@@ -41,8 +41,8 @@ public class Main {
 
         //如果需要分页，则生成Page & Pageable
         if (Boolean.parseBoolean(params.get("pagination"))) {
-            resolveTemplateAndGenerateFile(Page.TEMPLATE, null, params.get("modelFilePath"), "Page");
-            resolveTemplateAndGenerateFile(Pageable.TEMPLATE, null, params.get("modelFilePath"), "Pageable");
+            resolveTemplateAndGenerateFile(Page.TEMPLATE, params, params.get("modelFilePath"), "Page");
+            resolveTemplateAndGenerateFile(Pageable.TEMPLATE, params, params.get("modelFilePath"), "Pageable");
         }
 
         System.out.println("all done!");
