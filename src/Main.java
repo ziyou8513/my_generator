@@ -75,7 +75,7 @@ public class Main {
         //获取各类文件包路径
         String DAO_PACKAGE = BASE_PACKAGE + ".dao";
         String DAO_IMPL_PACKAGE = DAO_PACKAGE + ".impl";
-        String SERVICE_PACKAGE = BASE_PACKAGE + "service";
+        String SERVICE_PACKAGE = BASE_PACKAGE + ".service";
         String SERVICE_IMPL_PACKAGE = SERVICE_PACKAGE + ".impl";
         String MODEL_HOME = BASE_PACKAGE + ".model";
         String MODEL_DATABASE = MODEL_HOME + ".database";
