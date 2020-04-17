@@ -5,23 +5,28 @@
 一键生成dao&service层
 
 #### 软件架构
-软件架构说明
+src
+ ├─templates	文件模板
+ └─util			工具类
 
 
 #### 安装教程
 
-1.  jdk8
-2.  无其他依赖
+1.  jdk1.8
 
 #### 使用说明
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+1.  下载release包
+2.  修改config.properties里的参数
+3.  运行run-my-generator.bat
+
+#### 注意事项
+1.	前置条件，先用mybatis生成mapper
+2.	省去自己编写dao和service层基本代码
 
 #### 参与贡献
 
 1.  Fork 本仓库
-2.  新建 Feat_xxx 分支
+2.  新建dbg_xxx分支
 3.  提交代码
 4.  新建 Pull Request
