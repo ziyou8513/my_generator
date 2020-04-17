@@ -5,9 +5,9 @@
 一键生成dao&service层
 
 #### 软件架构
-src
- ├─templates	文件模板
- └─util			工具类
+src  
+ ├─templates	文件模板  
+ └─util			工具类  
 
 
 #### 安装教程
