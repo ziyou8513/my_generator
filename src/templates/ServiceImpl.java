@@ -22,6 +22,7 @@ public class ServiceImpl {
             "\n" +
             "    @Override\n" +
             "    public int insert(${upperModelName} record) {\n" +
+            "        //TODO set default value for some fields" +
             "        return ${lowerModelName}Dao.insert(record);\n" +
             "    }\n" +
             "\n" +
