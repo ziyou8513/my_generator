@@ -1,4 +1,4 @@
-import templates.*;
+import model.TemplatesConts;
 import util.FileGenerator;
 import util.TemplateResolver;
 
@@ -13,11 +13,15 @@ import java.util.Properties;
  * Created by sheldon on 2019/12/16.
  */
 public class Main {
-    private static final String SUFFIX = "java";
-
     public static void main(String[] args) {
+        if (args.length == 0) {
+            System.out.println("未指定配置文件，将使用缺省值");
+            args = new String[]{"config=config.properties"};
+        }
+
         //加载配置文件
-        Properties pro = readProperties();
+        String path = args[0].substring(args[0].indexOf("=") + 1);
+        Properties pro = readProperties(path);
         if (pro == null) {
             System.out.println("can not read properties!");
             return;
@@ -41,18 +45,18 @@ public class Main {
 
         //如果需要分页，则生成Page & Pageable
         if (Boolean.parseBoolean(params.get("pagination"))) {
-            resolveTemplateAndGenerateFile(Page.TEMPLATE, params, params.get("modelFilePath"), "Page");
-            resolveTemplateAndGenerateFile(Pageable.TEMPLATE, params, params.get("modelFilePath"), "Pageable");
+            resolveTemplateAndGenerateFile(TemplatesConts.PAGE, params, params.get("modelFilePath"), "Page");
+            resolveTemplateAndGenerateFile(TemplatesConts.PAGEABLE, params, params.get("modelFilePath"), "Pageable");
         }
 
         System.out.println("all done!");
     }
 
-    private static Properties readProperties() {
+    private static Properties readProperties(String path) {
         Properties pro = new Properties();
         FileInputStream in = null;
         try {
-            in = new FileInputStream(".\\config.properties");
+            in = new FileInputStream(path);
             pro.load(in);
             return pro;
         } catch (IOException e) {
@@ -98,11 +102,6 @@ public class Main {
         String SERVICE_IMPL_FILE_PATH = SERVICE_FILE_PATH + "\\impl";
         String MODEL_FILE_PATH = BASE_PATH + "\\model";
 
-        //是否分页
-        String pagination = pro.getProperty("PAGINATION");
-        //是否生成service
-        String generateService = pro.getProperty("GENERATE_SERVICE");
-
         //封装成map
         Map<String, String> params = new HashMap<>();
         //包路径
@@ -119,24 +118,18 @@ public class Main {
         params.put("serviceImplFilePath", SERVICE_IMPL_FILE_PATH);
         params.put("modelFilePath", MODEL_FILE_PATH);
         //是否分页
-        params.put("pagination", pagination);
+        params.put("pagination", pro.getProperty("PAGINATION"));
         //是否生成service
-        params.put("generateService", generateService);
+        params.put("generateService", pro.getProperty("GENERATE_SERVICE"));
 
         return params;
     }
 
     private static void loop(Map<String, String> params, String UPPER_MODEL_NAME) {
         //判断dao层是否分页
-        String daoTemplate;
-        String daoImplTemplate;
-        if (Boolean.parseBoolean(params.get("pagination"))) {
-            daoTemplate = DaoPageable.TEMPLATE;
-            daoImplTemplate = DaoImplPageable.TEMPLATE;
-        } else {
-            daoTemplate = Dao.TEMPLATE;
-            daoImplTemplate = DaoImpl.TEMPLATE;
-        }
+        boolean pagination = Boolean.parseBoolean(params.get("pagination"));
+        String daoTemplate = pagination ? TemplatesConts.DAO_PAGEABLE : TemplatesConts.DAO;
+        String daoImplTemplate = pagination ? TemplatesConts.DAO_IMPL_PAGEABLE : TemplatesConts.DAO_IMPL;
         //dao
         resolveTemplateAndGenerateFile(daoTemplate, params, params.get("daoFilePath"), UPPER_MODEL_NAME + "Dao");
         //daoImpl
@@ -145,16 +138,16 @@ public class Main {
         //判断是否生成service
         if (Boolean.parseBoolean(params.get("generateService"))) {
             //service
-            resolveTemplateAndGenerateFile(Service.TEMPLATE, params, params.get("serviceFilePath"), UPPER_MODEL_NAME + "Service");
+            resolveTemplateAndGenerateFile(TemplatesConts.SERVICE, params, params.get("serviceFilePath"), UPPER_MODEL_NAME + "Service");
             //serviceImpl
-            resolveTemplateAndGenerateFile(ServiceImpl.TEMPLATE, params, params.get("serviceImplFilePath"), UPPER_MODEL_NAME + "ServiceImpl");
+            resolveTemplateAndGenerateFile(TemplatesConts.SERVICE_IMPL, params, params.get("serviceImplFilePath"), UPPER_MODEL_NAME + "ServiceImpl");
         }
     }
 
-    private static void resolveTemplateAndGenerateFile(String template, Map<String, String> params, String fileFolder, String fileName) {
+    private static void resolveTemplateAndGenerateFile(String templateFile, Map<String, String> params, String fileFolder, String fileName) {
         //渲染模板
-        String serviceImplContent = TemplateResolver.resolver(template, params);
+        String content = TemplateResolver.resolver(templateFile, params);
         //写文件
-        FileGenerator.generateFile(fileFolder, fileName, SUFFIX, serviceImplContent);
+        FileGenerator.generateFile(fileFolder, fileName, "java", content);
     }
 }

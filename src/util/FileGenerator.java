@@ -10,6 +10,10 @@ import java.io.IOException;
 public class FileGenerator {
     //写文件
     public static void generateFile(String fileFolder, String fileName, String suffix, String content) {
+        if (content == null || content.isEmpty()) {
+            System.out.println("无内容，终止写入文件！");
+            return;
+        }
         try {
             //判断路径是否存在，不存在则创建
             File folder = new File(fileFolder);

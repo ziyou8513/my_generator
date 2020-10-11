@@ -1,0 +1,15 @@
+package ${servicePackage};
+
+import ${modelDatabase}.${upperModelName};
+
+import java.util.List;
+
+public interface ${upperModelName}Service {
+    int insert(${upperModelName} record);
+
+    int update(${upperModelName} record);
+
+    ${upperModelName} find(String id);
+
+    List<${upperModelName}> findList(${upperModelName} record);
+}

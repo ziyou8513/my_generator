@@ -1,0 +1,47 @@
+package ${modelHome};
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+public class Page<T> implements Serializable {
+    private List<? extends T> data;
+    private Integer totalNum;
+
+    public Page(List<? extends T> data, Integer totalNum) {
+        this.data = data;
+        this.totalNum = totalNum;
+    }
+
+    public List<? extends T> getData() {
+        return data;
+    }
+
+    public void setData(List<? extends T> data) {
+        this.data = data;
+    }
+
+    public Integer getTotalNum() {
+        return totalNum;
+    }
+
+    public void setTotalNum(Integer totalNum) {
+        this.totalNum = totalNum;
+    }
+
+    public static <T> Page<T> makeSinglePage(T t) {
+        if (t == null) {
+            return new Page<>(new ArrayList<>(), 0);
+        }
+        List<T> list = Collections.singletonList(t);
+        return new Page<>(list, 1);
+    }
+
+    public static <T> Page<T> makeListPage(List<T> tList) {
+        if (tList == null) {
+            return new Page<>(new ArrayList<>(), 0);
+        }
+        return new Page<>(tList, tList.size());
+    }
+}

@@ -1,0 +1,19 @@
+package ${daoPackage};
+
+import ${modelDatabase}.${upperModelName};
+
+import java.util.List;
+
+public interface ${upperModelName}Dao {
+    //add a record
+    int insert(${upperModelName} record);
+
+    //update a record
+    int update(${upperModelName} record);
+
+    //get record by primary key
+    ${upperModelName} find(String id);
+
+    //get records by condition
+    List<${upperModelName}> findList(${upperModelName} record);
+}

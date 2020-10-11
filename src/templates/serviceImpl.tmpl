@@ -1,0 +1,37 @@
+package ${serviceImplPackage};
+
+import ${daoPackage}.${upperModelName}Dao;
+import ${modelDatabase}.${upperModelName};
+import ${servicePackage}.${upperModelName}Service;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+public class ${upperModelName}ServiceImpl implements ${upperModelName}Service {
+
+    @Autowired
+    private ${upperModelName}Dao ${lowerModelName}Dao;
+
+    @Override
+    public int insert(${upperModelName} record) {
+        //TODO set default value for some fields
+        return ${lowerModelName}Dao.insert(record);
+    }
+
+    @Override
+    public int update(${upperModelName} record) {
+        return ${lowerModelName}Dao.update(record);
+    }
+
+    @Override
+    public ${upperModelName} find(String id) {
+        return ${lowerModelName}Dao.find(id);
+    }
+
+    @Override
+    public List<${upperModelName}> findList(${upperModelName} record) {
+        return ${lowerModelName}Dao.findList(record);
+    }
+}

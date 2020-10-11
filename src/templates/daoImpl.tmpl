@@ -1,0 +1,40 @@
+package ${daoImplPackage};
+
+import ${daoPackage}.${upperModelName}Dao;
+import ${daoPackage}.mapper.${upperModelName}Mapper;
+import ${modelDatabase}.${upperModelName};
+import ${modelDatabase}.${upperModelName}Example;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+
+@Repository
+public class ${upperModelName}DaoImpl implements ${upperModelName}Dao {
+
+    @Autowired
+    private ${upperModelName}Mapper ${lowerModelName}Mapper;
+
+    @Override
+    public int insert(${upperModelName} record) {
+        return ${lowerModelName}Mapper.insert(record);
+    }
+
+    @Override
+    public int update(${upperModelName} record) {
+        return ${lowerModelName}Mapper.updateByPrimaryKeySelective(record);
+    }
+
+    @Override
+    public ${upperModelName} find(String id) {
+        return ${lowerModelName}Mapper.selectByPrimaryKey(id);
+    }
+
+    @Override
+    public List<${upperModelName}> findList(${upperModelName} record) {
+        ${upperModelName}Example example = new ${upperModelName}Example();
+        ${upperModelName}Example.Criteria criteria = example.createCriteria();
+        //TODO query condition
+        return ${lowerModelName}Mapper.selectByExample(example);
+    }
+}
