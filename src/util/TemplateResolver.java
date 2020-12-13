@@ -1,6 +1,9 @@
 package util;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -9,7 +12,14 @@ import java.util.regex.Pattern;
  * Created by ziyou8513 on 2019/4/17.
  */
 public class TemplateResolver {
-    //渲染模板
+
+    /**
+     * 解析模板
+     *
+     * @param templateFile 模板文件名
+     * @param params       模板参数
+     * @return
+     */
     public static String resolver(String templateFile, Map<String, String> params) {
         //从模板文件中读取模板内容
         String template = readTemplate("/templates/" + templateFile);
@@ -19,6 +29,16 @@ public class TemplateResolver {
             return template;
         }
 
+        return render(template, params);
+    }
+
+    /**
+     * 渲染模板
+     *
+     * @param template 模板
+     * @param params   模板参数
+     */
+    private static String render(String template, Map<String, String> params) {
         //正则匹配所有变量占位符 ${w+}
         Matcher m = Pattern.compile("\\$\\{\\w+}").matcher(template);
         //替换变量
@@ -33,6 +53,12 @@ public class TemplateResolver {
         return sb.toString();
     }
 
+    /**
+     * 读取模板内容
+     *
+     * @param path 模板文件路径
+     * @return
+     */
     private static String readTemplate(String path) {
         InputStream resource = TemplateResolver.class.getResourceAsStream(path);
         if (resource == null) {
