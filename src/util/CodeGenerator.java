@@ -30,6 +30,10 @@ public class CodeGenerator {
         //循环生成每个类的代码
         String[] modelList = models.split(",");
         for (String PASCAL_MODEL_NAME : modelList) {
+            if (Character.isLowerCase(PASCAL_MODEL_NAME.charAt(0))) {
+                System.out.println("类名不是大驼峰命名，自动调整");
+                PASCAL_MODEL_NAME = Character.toUpperCase(PASCAL_MODEL_NAME.charAt(0)) + PASCAL_MODEL_NAME.substring(1);
+            }
             params.put("upperModelName", PASCAL_MODEL_NAME);
             //类名大驼峰转小驼峰
             String camelModelName = Character.toLowerCase(PASCAL_MODEL_NAME.charAt(0)) + PASCAL_MODEL_NAME.substring(1);
