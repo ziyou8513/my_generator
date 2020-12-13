@@ -12,7 +12,7 @@ public class TemplateResolver {
     //渲染模板
     public static String resolver(String templateFile, Map<String, String> params) {
         //从模板文件中读取模板内容
-        String template = readFile("/templates/" + templateFile);
+        String template = readTemplate("/templates/" + templateFile);
 
         //如果参数列表为空，则直接返回模板
         if (params == null || params.size() == 0) {
@@ -33,14 +33,12 @@ public class TemplateResolver {
         return sb.toString();
     }
 
-    private static String readFile(String path) {
+    private static String readTemplate(String path) {
         InputStream resource = TemplateResolver.class.getResourceAsStream(path);
         if (resource == null) {
-            System.out.println("无法读取模板信息");
-            return "";
+            throw new RuntimeException("读取模板失败：" + path);
         }
         StringBuilder stringBuilder = new StringBuilder();
-//        File file = new File(path);
         BufferedReader reader = null;
         try {
             reader = new BufferedReader(new InputStreamReader(resource));

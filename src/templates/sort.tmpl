@@ -1,0 +1,37 @@
+package ${modelHome};
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Sort {
+    public static final String DESC = "DESC";
+    public static final String ASC = "ASC";
+
+    private final String orderBy;
+    private final String sortBy;
+
+    private Sort(String orderBy, String sortBy) {
+        this.orderBy = orderBy;
+        this.sortBy = sortBy;
+    }
+
+    @Override
+    public String toString() {
+        return this.orderBy + " " + this.sortBy;
+    }
+
+    public static Sortable sort(String orderBy, String sortBy) {
+        Sortable sortable = new Sortable();
+        sortable.sortClause.add(new Sort(orderBy, sortBy));
+        return sortable;
+    }
+
+    public static class Sortable {
+        protected final List<Sort> sortClause = new ArrayList<>();
+
+        public Sortable then(String orderBy, String sortBy) {
+            this.sortClause.add(new Sort(orderBy, sortBy));
+            return this;
+        }
+    }
+}

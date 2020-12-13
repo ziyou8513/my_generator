@@ -9,6 +9,7 @@ public class TemplatesConts {
     public static final String SERVICE = "service.tmpl";
     public static final String SERVICE_IMPL = "serviceImpl.tmpl";
 
+    public static final String SORT = "sort.tmpl";
     public static final String PAGE = "page.tmpl";
     public static final String PAGEABLE = "pageable.tmpl";
 }

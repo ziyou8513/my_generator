@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import ${modelHome}.Pageable;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -42,14 +43,21 @@ public class ${upperModelName}DaoImpl implements ${upperModelName}Dao {
 
     @Override
     public Page<${upperModelName}> findPage(${upperModelName} record, Pageable pageable) {
+        if (pageable == null) {
+            return new Page<>(new ArrayList<>(), 0);
+        }
         ${upperModelName}Example example = new ${upperModelName}Example();
         ${upperModelName}Example.Criteria criteria = example.createCriteria();
         //TODO query condition
 
         int totalNum = ${lowerModelName}Mapper.countByExample(example);
-        if (pageable.getPage() != null && pageable.getLimit() != null) {
-            example.setOrderByClause(String.format("create_time desc limit %s,%s", (pageable.getPage() - 1) * pageable.getLimit(), pageable.getLimit()));
+        if (totalNum == 0) {
+            return new Page<>(new ArrayList<>(), totalNum);
         }
+        //pageable.setSortable(Sort.sort("create_time", Sort.DESC));
+        //pageable.setSortable(Sort.sort("create_time", Sort.DESC).then("user_id", Sort.ASC));
+        String orderClause = String.format("%s limit %s,%s", pageable.getSortClause(), pageable.getOffset(), pageable.getLimit());
+        example.setOrderByClause(orderClause);
         List<${upperModelName}> data = ${lowerModelName}Mapper.selectByExample(example);
         return new Page<>(data, totalNum);
     }

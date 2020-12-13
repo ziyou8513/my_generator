@@ -1,30 +1,46 @@
 package ${modelHome};
 
 public class Pageable {
-    private Integer page;
-    private Integer limit;
+    private final Integer page;
+    private final Integer limit;
+    private Sort.Sortable sortable;
 
     public Pageable(Integer page, Integer limit) {
         this.page = page;
         this.limit = limit;
     }
 
-    public Pageable() {
+    public Pageable(Integer page, Integer limit, Sort.Sortable sortable) {
+        this.page = page;
+        this.limit = limit;
+        this.sortable = sortable;
+    }
+
+    public void setSortable(Sort.Sortable sortable) {
+        this.sortable = sortable;
     }
 
     public Integer getPage() {
-        return page;
-    }
-
-    public void setPage(Integer page) {
-        this.page = page;
+        return this.page;
     }
 
     public Integer getLimit() {
-        return limit;
+        return this.limit;
     }
 
-    public void setLimit(Integer limit) {
-        this.limit = limit;
+    public Integer getOffset() {
+        int offset = (this.page - 1) * this.limit;
+        return Math.max(offset, 0);
+    }
+
+    public String getSortClause() {
+        if (this.sortable == null || this.sortable.sortClause.size() == 0) {
+            throw new RuntimeException("sortable is required");
+        }
+        String[] arr = new String[sortable.sortClause.size()];
+        for (int i = 0; i < sortable.sortClause.size(); i++) {
+            arr[i] = sortable.sortClause.get(i).toString();
+        }
+        return String.join(",", arr);
     }
 }
